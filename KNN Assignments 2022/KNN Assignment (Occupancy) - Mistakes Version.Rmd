@@ -1,0 +1,90 @@
+---
+title: "Assignment - KNN Occupancy"
+author:
+  - name author here - Omercan Gurbuz
+  - name reviewer here - Aziz
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+   html_notebook:
+    toc: true
+    toc_depth: 2
+---
+## Setup your library
+
+```{r}
+library(tidyverse)
+library(googlesheets4)
+library(class)
+library(caret)
+library("ggplot2")
+```
+
+---
+
+## Choose a suitable dataset 
+from [this](https://github.com/HAN-M3DM-Data-Mining/assignments/tree/master/datasets) folder and train  your own kNN model. Follow all the steps from the CRISP-DM model.
+
+
+## Business Understanding
+A hospital wants to know if patients who have been checked out are still counted as occupying hospital rooms. They want a model that will allow them to determine whether there is someone in the room based on real-time data from their hospital rooms. Regardless of what time of the year it is.
+
+## Data Understanding
+```{r}
+url <- "https://raw.githubusercontent.com/HAN-M3DM-Data-Mining/assignments/master/datasets/KNN-occupancy.csv"
+rawDF <- read_csv(url)
+view(rawDF)
+```
+
+## Data Preparation
+
+```{r}
+model1<-lm( Occupancy ~ Light + Humidity + Temperature + date + HumidityRatio,data=rawDF)
+summary(model1)
+```
+
+```{r}
+cleanDF <- rawDF[c(-1,-2,-3,-10)]
+head(cleanDF)
+```
+
+#We convert the occupancy variable into a factor since many models call for the variable we wish to focus on to be a factor.
+
+```{r}
+cntOccu <- table(cleanDFOccupancy)
+propOccu <- round(prop.table(cntOccu) * 100 , digits = 1)
+cleanDFOccupancy <- factor(cleanDFOccupancy, levels = c(0, 1))
+```
+
+#To test whether the knn function is successful in predicting occupancy based on light and CO2, we divide the data twice: once to train it and once to test it.
+
+```{r}
+trainDF_feat <- cleanDF[1:4071,  ]
+testDF_feat <- cleanDF[4072:8143,  ]
+trainDF_labels <- cleanDF[1:4071,  3]
+testDF_labels <- cleanDF[4072:8143,  3]
+
+```
+
+
+## Modeling
+
+#Finally, training and presenting our model is what remains.
+```{r}
+cleanDF_occupancy_pred <- knn(train = as.matrix(trainDF_feat), test = as.matrix(testDF_feat), cl = as.matrix(trainDF_labels), k = 21)
+head(cleanDF_occupancy_pred)
+
+
+```
+
+
+
+## Evaluation and Deployment
+
+```{r}
+confusionMatrix(cleanDF_occupancy_pred, testDF_labels[[0]], positive = NULL, dnn = c("Prediction", "True"))
+```
+
+
+## Evaluation and Deployment
+
+reviewer adds suggestions for improving the model
