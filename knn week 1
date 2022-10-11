@@ -1,0 +1,66 @@
+---
+  title: "Assigment - kNN DIY"
+author:
+  - Omercan Gurbuz - Author
+- Aziz - Reviewer
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_notebook:
+  toc: true
+toc_depth: 2 
+---
+  
+  
+ ```{r}
+
+
+# First install the packages that are necessary.
+
+install.packages("readr")
+install.packages("class")
+install.packages("magrittr")
+install.packages("caret")
+install.packages("e1071")
+install.packages("RCurl")
+install.packages("tidyverse")
+install.packages("caret")
+install.packages("lattice")
+install.packages('rmarkdown')
+
+# Get the data from github.
+
+library(RCurl)
+x <- getURL("https://raw.githubusercontent.com/HAN-M3DM-Data-Mining/assignments/master/datasets/KNN-hcvdat0.csv")
+y <- read.csv(text = x)
+
+# Set up the library
+
+library (readr)
+library(tidyverse)
+library(googlesheets4)
+library(class)
+library(caret)
+library(RCurl)
+```
+
+---
+  
+  Choose a suitable dataset from [this](https://github.com/HAN-M3DM-Data-Mining/assignments/tree/master/datasets) folder and train  your own kNN model. Follow all the steps from the CRISP-DM model.
+
+
+## Business Understanding
+text and code here
+
+## Data Understanding
+text and code here
+
+## Data Preparation
+text and code here
+
+## Modeling
+text and code here
+
+## Evaluation and Deployment
+text and code here
+
+reviewer adds suggestions for improving the model
